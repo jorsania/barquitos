@@ -1,0 +1,32 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 65px);
+}
+
+mat-card {
+    position: relative;
+    max-width: 400px;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 25px;
+    text-align: center;
+}
+
+mat-form-field {
+    display: block;
+}
+
+.boton {
+    margin: 10px 0 20px 0;
+}
+
+.boton>button {
+    width: 100%;
+}
+
+#cuentaActivada {
+    top: 30%;    
+}
+

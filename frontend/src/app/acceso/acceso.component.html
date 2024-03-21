@@ -1,0 +1,30 @@
+<div class="wrapper">
+    <mat-card class="mat-elevation-z4">
+        <mat-card-content>
+            <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+                <h2>Acceso</h2>
+                <mat-form-field>
+                    <input matInput placeholder="Nombre de usuario o email" [(ngModel)]="login"
+                        name="login" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="password" placeholder="Contraseña" [(ngModel)]="password" name="password"
+                        required>
+                </mat-form-field>
+                <div class="recuerdame">
+                    <mat-checkbox [(ngModel)]="recuerdame" name="recuerdame">Recuérdame</mat-checkbox>
+                    <a routerLink="./">¿No puedes acceder?</a>
+                </div>
+                <div class="acceso">
+                    <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid">Accede</button>
+                </div>
+                <div class="recuperacion">
+                    ¿No tienes cuenta? <a routerLink="/registro">Regístrate</a>
+                </div>
+                <mat-error>
+                    {{mensaje}}
+                </mat-error>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

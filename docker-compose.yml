@@ -1,0 +1,32 @@
+version: "2"
+
+secrets:
+  db_password:
+    environment: DB_PASSWORD
+
+services:
+  pasarela:
+    image: nginx
+    ports:
+      - "${PUERTO}:80"
+    environment:
+      DIRECCION: ${DIRECCION}
+
+  frontend:
+    environment:
+      DIRECCION: ${DIRECCION}
+
+  php:
+    secrets:
+      - db_password
+    environment:
+      DIRECCION: ${DIRECCION}
+
+  mysql:
+    image: mysql
+    secrets:
+      - db_password
+    volumes:
+      - /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /var/run/secrets/db_password

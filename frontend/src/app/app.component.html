@@ -1,0 +1,58 @@
+<mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+  <span>
+    <button mat-button routerLink="/"><mat-icon inline="false">home</mat-icon></button>
+    <button mat-button routerLink="/">{{title}}</button>
+  </span>
+  <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+    <button mat-button routerLink="/registro" *ngIf="!isAuthenticated">
+      <mat-icon>create</mat-icon>
+      Registro
+    </button>
+    <button mat-button routerLink="/acceso" *ngIf="!isAuthenticated">
+      <mat-icon>account_circle</mat-icon>
+      Acceso
+    </button>
+    <button mat-button routerLink="/partidas" *ngIf="isAuthenticated">
+      <mat-icon>view_headline</mat-icon>
+      Mis Partidas
+    </button>
+    <button mat-button routerLink="/buscaPartida" *ngIf="isAuthenticated">
+      <mat-icon>manage_search</mat-icon>
+      Busca Partida
+    </button>
+    <button mat-button *ngIf="isAuthenticated" (click)="logout()">
+      <mat-icon>power_settings_new</mat-icon>
+      Desconecta
+    </button>
+  </div>
+  <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-menu x-position="before" #menu="matMenu">
+  <button mat-menu-item routerLink="/">
+    <mat-icon>home</mat-icon>
+    Inicio
+  </button>
+  <button mat-menu-item routerLink="/acceso" *ngIf="!isAuthenticated">
+    <mat-icon>account_circle</mat-icon>
+    Acceso
+  </button>
+  <button mat-menu-item routerLink="/registro" *ngIf="!isAuthenticated">
+    <mat-icon>create</mat-icon>
+    Registro
+  </button>
+  <button mat-menu-item routerLink="/partidas" *ngIf="isAuthenticated">
+    <mat-icon>view_headline</mat-icon>
+    Mis Partidas
+  </button>
+  <button mat-menu-item routerLink="/buscaPartida" *ngIf="isAuthenticated">
+    <mat-icon>manage_search</mat-icon>
+    Busca Partida
+  </button>
+  <button mat-menu-item *ngIf="isAuthenticated" (click)="logout()">
+    <mat-icon>power_settings_new</mat-icon>
+    Desconecta
+  </button>
+</mat-menu>
+<router-outlet></router-outlet>

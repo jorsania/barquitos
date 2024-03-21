@@ -1,0 +1,41 @@
+<div class="wrapper">
+    <mat-card *ngIf="tokenValido" class="mat-elevation-z4">
+        <mat-card-content>
+            <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+                <h1>Completa el registro</h1>
+                <p>Establece una contraseña para completar el registro de la cuenta '{{alias}}'
+                    asociada a el email '{{email}}'
+                </p>
+                <mat-form-field>
+                    <input matInput type="password" [(ngModel)]="pass1" placeholder="Introduce la contraseña"
+                        name="password" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="password" [(ngModel)]="pass2" placeholder="Repite la contraseña"
+                        name="password2" required>
+                </mat-form-field>
+                <mat-error *ngIf="(this.pass1 != this.pass2) && this.pass1 != '' && this.pass2 != ''">
+                    Las contraseñas no coinciden
+                </mat-error>
+                <div class="boton">
+                    <button mat-raised-button color="primary"
+                        [disabled]="!loginForm.form.valid || (this.pass1 != this.pass2) && this.pass1 != '' && this.pass2 != ''">
+                        Activa la cuenta</button>
+                </div>
+                <mat-error>
+                    {{errorValidacion}}
+                </mat-error>
+            </form>
+        </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="!tokenValido" class="mat-elevation-z4">
+        El enlace ha expirado o es inválido
+    </mat-card>
+    <mat-card id="cuentaActivada" *ngIf="cuentaActivada" class="mat-elevation-z4">
+        <p>
+            La cuenta ha sido activada correctamente, a continuación serás redirigido a la página de
+            acceso donde podrás acceder al juego con tus nuevas credenciales
+        </p>
+        <button mat-raised-button color="primary" routerLink="/acceso">De acuerdo</button>
+    </mat-card>
+</div>

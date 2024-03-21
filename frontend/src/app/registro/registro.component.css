@@ -1,0 +1,41 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 65px);
+}
+
+mat-card {
+    position: relative;
+    max-width: 400px;
+    top: 47.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 25px;
+}
+
+h2 {
+    display: block;
+    text-align: center;
+}
+
+mat-form-field {
+    display: block;
+}
+
+.enlinea {
+    display: inline-block;
+}
+
+#linea {
+    display: flex;
+    justify-content: space-between;
+}
+
+.registro > button {
+    width: 100%;
+    margin: 20px 0;
+}
+
+#registroCompletado {
+    text-align: justify;
+}
