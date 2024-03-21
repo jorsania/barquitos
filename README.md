@@ -20,4 +20,7 @@ Una vez realizada la configuración inicial, se puede lanzar el proyecto mediant
 
 - En el entorno de producción el código fuente Angular del frontend se compila mediante la instrucción `ng build` de `angular/cli` en una imagen de `node.js`, el resultado de esta compilación se traspasa a una imagen del servidor `nginx`, que se encarga de su ejecución. En el entorno de desarrollo se monta como volumen el código fuente del frontend en un contenedor de `node.js` con `angular/cli`, en dicho contenedor se ejecuta un servidor web de desarrollo mediante la instrucción `ng serve`.
 
-- En el entorno de desarrollo se instala adicionalmente en el mismo contenedor de PHP que contiene la API del backend, una interfaz phpMyAdmin, para poder consultar y modificar directamente la base de datos `mysql` del proyecto.
+## Acceso a la BBDD
+
+Actualmente se instala en ambos entornos, en el mismo contenedor de PHP que contiene la API del backend, una interfaz phpMyAdmin, para poder consultar y modificar directamente la base de datos `mysql` del proyecto. En el despliegue definitivo ésta
+será eliminada del entorno de producción.

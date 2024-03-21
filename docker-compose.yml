@@ -10,16 +10,19 @@ services:
     ports:
       - "${PUERTO}:80"
     environment:
+      DOMINIO: ${DOMINIO}
       DIRECCION: ${DIRECCION}
 
   frontend:
     environment:
+      DOMINIO: ${DOMINIO}
       DIRECCION: ${DIRECCION}
 
   php:
     secrets:
       - db_password
     environment:
+      DOMINIO: ${DOMINIO}
       DIRECCION: ${DIRECCION}
 
   mysql:

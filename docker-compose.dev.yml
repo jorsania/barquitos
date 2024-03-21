@@ -7,6 +7,8 @@ configs:
     file: ./conf/nginx-pasarela-api.conf
   pasarela_phpmyadmin_conf:
     file: ./conf/nginx-pasarela-phpmyadmin.conf
+  frontend:
+    file: ./conf/frontend-angular.sh
   php_msmtp:
     file: ./conf/msmtprc
 
@@ -29,17 +31,21 @@ services:
         FROM node:14 AS barquitos_angular
         RUN npm install -g envsub
         RUN npm install -g @angular/cli@^14.0.0
+    configs:
+      - source: frontend
+        target: /envsub.sh
     volumes:
       - ./frontend:/frontend
     working_dir: /frontend
     command: >
-      sh -c "envsub
-      /frontend/src/assets/config.js.template
-      /frontend/src/assets/config.js &&
-      ng serve --disable-host-check --host 0.0.0.0 --port 80"
+      sh -c "
+      /envsub.sh &&
+      npm install &&
+      ng serve --public-host ${DOMINIO} --host 0.0.0.0 --port 80"
 
   php:
     image: barquitos_php_dev
+    user: ${USRID}:${GRPID}
     configs:
       - source: php_msmtp
         target: /etc/msmtprc
