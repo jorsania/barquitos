@@ -1,0 +1,3 @@
+FROM node:14 AS angular
+COPY entrypoint.dvlp.sh /usr/local/sbin/entrypoint.sh
+RUN npm install -g @angular/cli@^14.0.0

@@ -1,0 +1,16 @@
+# Variables de configuración para el envío de correo en entorno de PRODUCCIÓN
+
+# Dirección de correo saliente
+MAIL_FROM=donotreply@domain.com
+
+# Usuario de autenticación en servidor de correo saliente
+SMTP_AUTH_USER=donotreply@domain.com
+
+# Servidor de correo saliente
+SMTP_SERVER_ADDRESS=smpt.domain.com
+
+# Puerto en servidor de correo saliente
+SMTP_SERVER_PORT=25
+
+# Contraseña de autenticación en servidor de correo saliente
+SMTP_PASSWORD=""

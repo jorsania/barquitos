@@ -1,0 +1,4 @@
+function setenv(window) {
+  window["HOST_ADDR"] = "${HOST_ADDR}";
+}
+setenv(this);

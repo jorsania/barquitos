@@ -1,4 +1,3 @@
-.env
-push.sh
-env-deploy
-docker-compose.override.yml
+.vscode
+.*_password
+docker-compose.yml

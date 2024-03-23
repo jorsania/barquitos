@@ -1,4 +1,0 @@
-function configura(window) {
-    window["DIRECCION"] = "${DIRECCION}";
-}
-configura(this);

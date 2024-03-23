@@ -1,0 +1,62 @@
+version: "2"
+secrets:
+  db_password:
+    file: .db_password
+  mail_password:
+    file: .mail_password
+
+services:
+  pasarela:
+    image: ghcr.io/jorsania/barquitos_pasarela
+    user: ${USRID}:${GRPID}
+    build:
+      context: pasarela
+    ports:
+      - ${PORT}:80
+    environment:
+      DOMAIN: ${DOMAIN}
+      BASE_ADDR: ${BASE_ADDR}
+
+  frontend:
+    image: barquitos_frontend_dev
+    user: ${USRID}:${GRPID}
+    build:
+      context: frontend
+      dockerfile: Dockerfile.dvlp
+    volumes:
+      - ./frontend/angular:/angular
+    working_dir: /angular
+    entrypoint: entrypoint.sh
+    environment:
+      DOMAIN: ${DOMAIN}
+      BASE_ADDR: ${BASE_ADDR}
+      HOST_ADDR: ${HOST_ADDR}
+
+  php:
+    image: barquitos_php_dev
+    user: ${USRID}:${GRPID}
+    build:
+      context: php
+      dockerfile: Dockerfile.dvlp
+    secrets:
+      - db_password
+      - mail_password
+    volumes:
+      - ./php/api:/var/www/html/api
+      - ./php/phpmyadmin:/var/www/html/phpmyadmin
+    env_file:
+      - path: build/mail.dvlp
+    environment:
+      DOMAIN: ${DOMAIN}
+      BASE_ADDR: ${BASE_ADDR}
+      HOST_ADDR: ${HOST_ADDR}
+
+  mysql:
+    image: mysql
+    user: ${USRID}:${GRPID}
+    volumes:
+      - /var/lib/mysql
+    secrets:
+      - db_password
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_password

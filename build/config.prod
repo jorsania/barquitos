@@ -1,0 +1,14 @@
+# Variables de configuración generales para el entorno de PRODUCCIÓN
+
+# Dirección web donde se encontrará alojado el proyecto, ejemplos:
+# HOST_ADDR=http://localhost:8080/
+# HOST_ADDR=http://dominio.com/barquitos/
+HOST_ADDR=http://dominio.com/
+
+# Puerto de escucha del proyecto, normalmente coincidirá con el de la
+# dirección, pero puede no ser el casi si hay redirecciones de por medio
+PORT=80
+
+# Contraseña de la base de datos, se establece en este archivo, será
+# la que hay que usar para el login en la interfaz de phpMyAdmin
+DB_PASSWORD=root

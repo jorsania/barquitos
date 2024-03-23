@@ -1,0 +1,17 @@
+FROM php:apache
+
+COPY apache2.conf /templates/000-default.conf.template
+RUN touch /etc/apache2/sites-available/000-default.conf
+RUN chmod 777 /etc/apache2/sites-available/000-default.conf
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Eliminar phpmyadmin en versión despliegue definitiva
+RUN docker-php-ext-install mysqli
+
+COPY msmtprc /templates/msmtprc.template
+RUN touch /etc/msmtprc
+RUN chmod 777 /etc/msmtprc
+RUN apt update && apt upgrade -y && apt install -y gettext-base mailutils msmtp msmtp-mta
+
+COPY cmd.sh /usr/local/sbin
+CMD cmd.sh
