@@ -25,6 +25,10 @@ services:
       BASE_ADDR: ${BASE_ADDR}
       HOST_ADDR: ${HOST_ADDR}
 
+  tomcat:
+    image: ghcr.io/jorsania/barquitos_tomcat
+    restart: always
+
   php:
     image: ghcr.io/jorsania/barquitos_php
     restart: always
@@ -38,6 +42,12 @@ services:
       DOMAIN: ${DOMAIN}
       BASE_ADDR: ${BASE_ADDR}
       HOST_ADDR: ${HOST_ADDR}
+
+  phpmyadmin:
+    image: phpmyadmin:fpm-alpine
+    environment:
+      PMA_HOST: mysql
+      PMA_ABSOLUTE_URI: ${HOST_ADDR}phpmyadmin/
 
   mysql:
     image: mysql

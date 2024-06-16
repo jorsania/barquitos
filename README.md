@@ -19,10 +19,10 @@ El código de éste repositorio está concebido para trabar con diferentes
 *entornos*. Existe un **entorno de desarrollo**, un **entorno de producción** y
 un **entorno de despliegue**. 
 
-Por otro lado, en su estado actual el proyecto se compone de cuatro *servicios*
+Por otro lado, en su estado actual el proyecto se compone de cinco *servicios*
 que se ejecutan en *contenedores* independientes, si bien en un futuro próximo
-se añadirá por lo menos uno más. Se generan y suben a este repositorio
-*imágenes* públicas genéricas para tres de estos *servicios*.
+se añadirán dos adicionales. Se generan y suben a este repositorio *imágenes*
+públicas genéricas para tres de estos *servicios*.
 
   - Servicio **pasarela**:
     
@@ -32,8 +32,8 @@ se añadirá por lo menos uno más. Se generan y suben a este repositorio
     servicio adecuado en función de la *URL* solicitada. 
     
     Para este servicio se genera una *imagen Docker* derivada de la imagen
-    oficial del servidor web *NGINX*. Esta imagen es común a todos los entornos
-    y es una de las que se suben al repositorio.
+    oficial del servidor web *NGINX* en su versión *alpine*. Esta imagen es
+    común a todos los entornos y es una de las que se suben al repositorio.
 
   - Servicio **frontend**:
     
@@ -52,8 +52,8 @@ se añadirá por lo menos uno más. Se generan y suben a este repositorio
         de la copia local del repositorio.
       
       * En el **entorno de producción** la se utiliza la imagen oficial del
-        servidor web *NGINX* para servir la versión compilada del *frontend*
-        mediante la instrucción `ng build`.
+        servidor web *NGINX* en su versión *alpine* para servir la versión
+        compilada del *frontend* mediante la instrucción `ng build`.
       
       Sólo se sube al repositorio la imagen del **entorno de producción**.
 
@@ -61,7 +61,7 @@ se añadirá por lo menos uno más. Se generan y suben a este repositorio
 
     Es el servicio que ejecuta las diferentes *API's* en *PHP* del proyecto.
     Genera una *imagen Docker* derivada de la imagen oficial del proyecto *PHP*
-    en su versión *servidor web Apache*.
+    en su versión *fpm-alpine*.
     
     En la versión del **entorno de desarrollo** el código no se incorpora a la
     imagen, sino que se monta como volumen en el directorio correspondiente de
@@ -70,23 +70,27 @@ se añadirá por lo menos uno más. Se generan y suben a este repositorio
     En la versión del **entorno de producción** el código se incorpora en la
     imagen en el momento de su creación.
     
-    También incorpora una interfaz *phpMyAdmin* para poder consultar y manipular
+    Sólo se sube al repositorio la imagen del **entorno de producción**.
+    
+  - Servicio **phpmyadmin**:
+
+    Ejecuta una interfaz *phpMyAdmin* para poder consultar y manipular
     fácilmente los contenidos de la base de datos durante las pruebas. En un
     caso de desarrollo profesional esta función se desactivaría en el **entorno
     de producción**. Pero al tratarse de un proyecto académico de índole
     demostrativa he optado por mantenerla en todos los entornos por practicidad
-    y conveniencia.
+    y conveniencia. No se genera ninguna imagen propia en ninguno de los
+    entornos, puesto que su nivel de adaptación es mínimo y se puede usar
+    directamente la imagen oficial del proyecto *phpMyAdmin*.
 
-    Sólo se sube al repositorio la imagen del **entorno de producción**.
-    
   - Servicio **mysql**:
     
     Este servicio aloja el gestor de base de datos *MySQL* y es el encargado de
     almacenar toda la información que necesita el proyecto para funcionar;
-    usuarios de la web, partidas en curso, estadísticas y logs, etc. Éste es el
-    único servicio que no genera ninguna imagen propia en ninguno de los
-    entornos, puesto que su nivel de adaptación es mínimo y se puede usar
-    directamente la imagen oficial del proyecto *MySQL*.
+    usuarios de la web, partidas en curso, estadísticas y logs, etc. No se
+    genera ninguna imagen propia en ninguno de los entornos, puesto que su nivel
+    de adaptación es mínimo y se puede usar directamente la imagen oficial del
+    proyecto *MySQL*.
   
     Lo utiliza internamente el servicio *php* y no es directamente accesible
     desde el exterior. Si bien se puede interactuar con él a través de la
@@ -291,4 +295,3 @@ una ejecución local del proyecto.
 Por ello, los entornos de **desarrollo** y **producción** necesitan una copia
 completa del repositorio, pero el de **despliegue** se puede usar copiando tan
 sólo el subdirectorio `build/` y el *script* de selección `deployment.sh`
-

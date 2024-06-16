@@ -38,22 +38,7 @@ $token = $token->idToken;
 
 // Informamos del proceso completado con éxito
 $respuesta->exito = true;
-$respuesta->mensaje =
-    "<p>" .
-    "Se requiere verificar el correo electrónico para completar el " .
-    "proceso de registro, de ha enviado un enlace a la dirección suministrada " .
-    "que tendrás que visitar en los próximos 30 minutos para activar la cuenta. " .
-    "Puedes cerrar esta pestaña del navegador." .
-    "</p><hr/>" .
-    "<h3><strong>IMPORTANTE:</strong></h3>" .
-    "<p>" .
-    "Se suministra el enlace a continuación por si no está configurada la " .
-    "entrega de correo electrónico en PHP. Esta parte del mensaje debe ser " .
-    "eliminada en producción:" .
-    "</p>" .
-    "<a href='". $_ENV['HOST_ADDR'] . "activa/$token'>" .
-    " Pincha aquí para activar la cuenta" .
-    "</a>";
+$respuesta->mensaje = "Se ha intentado enviar el enlace de activación a la dirección de correo asociada";
 
 echo json_encode($respuesta);
 

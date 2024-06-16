@@ -13,10 +13,8 @@ export class RegistroComponent implements OnInit {
   public jugador: Jugador = new Jugador();
   public errores: Jugador = new Jugador();
   public registroCompletado: boolean = false;
-  public mensajeRegistroCompletado: string = '';
 
-  constructor(
-    private registroService: RegistroService) {
+  constructor(private registroService: RegistroService) {
     this.errores.apellidos = '';
     this.errores.telefono = '';
   }
@@ -30,7 +28,6 @@ export class RegistroComponent implements OnInit {
         respuesta => {
           if (respuesta.exito) {
             this.registroCompletado = true;
-            this.mensajeRegistroCompletado = respuesta.mensaje;
           } else {
             this.errores = respuesta.contenido;
           }

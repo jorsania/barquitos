@@ -1,10 +1,11 @@
 <div class="wrapper">
+    <img src="assets/img/portada.jpeg" />
     <mat-card *ngIf="tokenValido" class="mat-elevation-z4">
         <mat-card-content>
             <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
                 <h1>Completa el registro</h1>
                 <p>Establece una contraseña para completar el registro de la cuenta '{{alias}}'
-                    asociada a el email '{{email}}'
+                   asociada a el email '{{email}}'
                 </p>
                 <mat-form-field>
                     <input matInput type="password" [(ngModel)]="pass1" placeholder="Introduce la contraseña"

@@ -2,16 +2,21 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccesoComponent } from './acceso/acceso.component';
 import { InicioComponent } from './inicio/inicio.component';
+import { PartidaComponent } from './partida/partida.component';
 import { RegistroComponent } from './registro/registro.component';
+import { RecuperaComponent } from './recupera/recupera.component';
 import { ActivaCuentaComponent } from './activa-cuenta/activa-cuenta.component';
+import { RestablecePasswordComponent } from './restablece-password/restablece-password.component';
 
 const routes: Routes = [
   {path: '', component: InicioComponent},
   {path: 'acceso', component: AccesoComponent},
-  {path: 'registro', component: RegistroComponent},
+  {path: 'partida', component: PartidaComponent},
   {path: 'partidas', component: InicioComponent},
-  {path: 'buscaPartida', component: InicioComponent},
+  {path: 'registro', component: RegistroComponent},
+  {path: 'recupera', component: RecuperaComponent},
   {path: 'activa/:token', component: ActivaCuentaComponent},
+  {path: 'restablece/:token', component: RestablecePasswordComponent},
   {path: '**', component: InicioComponent}
 ];
 

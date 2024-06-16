@@ -20,7 +20,19 @@ export class RegistroService {
   }
 
   activaCuenta(token: string, password: string) {
-    return this.http.post<Respuesta>(`${environment.HOST_ADDR}api/activaCuenta.php?token=${token}`,password);
+    return this.http.post<Respuesta>(`${environment.HOST_ADDR}api/activaCuenta.php?token=${token}`, password);
+  }
+
+  recuperaCuenta(cuenta: string) {
+    return this.http.post<Respuesta>(`${environment.HOST_ADDR}api/recuperaCuenta.php`, cuenta);
+  }
+
+  compruebaTokenRecuperacion(token: string) {
+    return this.http.get<Respuesta>(`${environment.HOST_ADDR}api/restablecePassword.php?token=${token}`);
+  }
+
+  restablecePassword(token: string, password: string) {
+    return this.http.post<Respuesta>(`${environment.HOST_ADDR}api/restablecePassword.php?token=${token}`, password);
   }
 
 }

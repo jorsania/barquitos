@@ -16,11 +16,10 @@ class Jugador
     {
         $bd = BaseDeDatos::conecta();
         $sql =
-            "DELETE FROM 
-                jugador 
-            WHERE 
-                pass IS NULL 
-            AND CURRENT_TIMESTAMP > DATE_ADD(fechaReg ,INTERVAL " . EXPIRA_SOLICITUD_REGISTRO . ");";
+            "DELETE FROM jugador 
+             WHERE 
+                pass IS NULL AND
+                CURRENT_TIMESTAMP > DATE_ADD(fechaReg ,INTERVAL " . EXPIRA_SOLICITUD_REGISTRO . ");";
         $bd->ejecutaSentencia($sql);
     }
 
@@ -43,7 +42,7 @@ class Jugador
     }
 
     // Busca un usuario registrado por nombre de usuario  o dirección de correo
-    private static function busca($login)
+    public static function busca($login)
     {
         $sql =
             "SELECT 
@@ -117,15 +116,21 @@ class Jugador
     public static function obtenSolcitudRegistro($token)
     {
         $idJugador = null;
+
+        // Limpiamos la tabla de registro de tokens inválidos
+        $bd = BaseDeDatos::conecta();
+        $sql = "DELETE FROM registro WHERE idToken NOT IN (SELECT idToken FROM token);";
+        $sentencia = $bd->prepara($sql);
+        $bd->ejecuta($sentencia);
+
         // Comprobamos que el token recibido existe y no está expirado
         $token = Token::obten($token);
         if ($token) {
             // Comprobamos que está asociado a una solicitud de registro
-            $bd = BaseDeDatos::conecta();
             $sql =
                 "SELECT idJugador 
-                FROM jugador NATURAL JOIN registro 
-                WHERE idToken = '$token->idToken' AND pass IS NULL";
+                 FROM jugador NATURAL JOIN registro 
+                 WHERE idToken = '$token->idToken' AND pass IS NULL";
             $idJugador = $bd->ejecutaConsulta($sql)->fetchColumn();
         }
         return $idJugador;
@@ -143,7 +148,7 @@ class Jugador
         // Creamos una entrada en la tabla de solicitudes de registro para asociar el token
         // a la entrada de la tabla de jugadores
         $sql =
-            "INSERT INTO registro (idToken,idJugador) 
+            "INSERT INTO registro (idToken, idJugador) 
             VALUES (?, 
                 (SELECT idJugador FROM jugador WHERE email = ?))";
         $bd = BaseDeDatos::conecta();
@@ -152,7 +157,56 @@ class Jugador
         return $token;
     }
 
-    public function finalizaRegistro($pass, $token)
+    // Obtiene una solicitud de recuperación a partir de un token
+    public static function obtenSolcitudRecuperacion($token)
+    {
+        $idJugador = null;
+
+        // Limpiamos la tabla de recuperacion de tokens inválidos
+        $bd = BaseDeDatos::conecta();
+        $sql = "DELETE FROM recuperacion WHERE idToken NOT IN (SELECT idToken FROM token);";
+        $sentencia = $bd->prepara($sql);
+        $bd->ejecuta($sentencia);
+
+        // Comprobamos que el token recibido existe y no está expirado
+        $token = Token::obten($token);
+        if ($token) {
+            // Comprobamos que está asociado a una solicitud de recuperacion
+            $sql =
+                "SELECT idJugador 
+                 FROM jugador NATURAL JOIN recuperacion 
+                 WHERE idToken = '$token->idToken'";
+            $idJugador = $bd->ejecutaConsulta($sql)->fetchColumn();
+        }
+        return $idJugador;
+    }
+
+    // Inserta una solicitud de recuperación y devuelve un token asociado a la misma
+    public function insertaSolcitudRecuperacion()
+    {
+        // Comprobamos si ya existe una solicitud vigente para este jugador
+        Token::limpiaTabla();
+        $sql = "SELECT idToken FROM recuperacion NATURAL JOIN token WHERE idJugador = '$this->idJugador'";
+        $bd = BaseDeDatos::conecta();
+        $idToken = $bd->ejecutaConsulta($sql)->fetchColumn();
+        if ($idToken) $token = null;
+        else {
+            // Generamos el token asociado a la solicitud
+            $token = Token::genera(EXPIRA_SOLICITUD_RECUPERACION);
+
+            // Creamos una entrada en la tabla de solicitudes de recuperación para asociar el token
+            // a la entrada de la tabla de jugadores
+            $sql =
+                "INSERT INTO recuperacion (idToken,idJugador) 
+                VALUES (?, (SELECT idJugador FROM jugador WHERE email = ?))";
+            $sentencia = $bd->prepara($sql);
+            $bd->ejecuta($sentencia, [$token->idToken, $this->email]);
+        }
+
+        return $token;
+    }
+
+    public function cambiaPassword($pass, $token)
     {
         $erroresValidacion = self::validaPassword($pass);
         if (!$erroresValidacion) {
@@ -161,6 +215,14 @@ class Jugador
             Token::obten($token)->borra();
         }
         return $erroresValidacion;
+    }
+
+    // Envía un enlace de recuperación de contraseña a una cuenta si existe
+    public static function recuperaCuenta($cuenta)
+    {
+        $jugador = self::busca($cuenta);
+        if (!empty($jugador)) {
+        }
     }
 
     // Validaciones para cada campo
@@ -295,7 +357,7 @@ class Jugador
                 $consulta = $bd->prepara($sql);
                 $bd->ejecuta($consulta, [$this->alias]);
                 if ($consulta->fetchColumn()) {
-                    $noValida["alias"] = "El alias elegido ya está registrado";
+                    $noValida["alias"] = "El alias elegido no está libre";
                 }
             }
         }

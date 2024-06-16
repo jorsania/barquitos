@@ -22,7 +22,7 @@ services:
     user: ${USRID}:${GRPID}
     build:
       context: frontend
-      dockerfile: Dockerfile.dvlp
+      target: barquitos_frontend_dev
     volumes:
       - ./frontend/angular:/angular
     working_dir: /angular
@@ -32,18 +32,22 @@ services:
       BASE_ADDR: ${BASE_ADDR}
       HOST_ADDR: ${HOST_ADDR}
 
+  tomcat:
+    image: barquitos_tomcat_dev
+    build:
+      context: tomcat
+
   php:
     image: barquitos_php_dev
     user: ${USRID}:${GRPID}
     build:
       context: php
-      dockerfile: Dockerfile.dvlp
+      target: barquitos_php_dev
     secrets:
       - db_password
       - mail_password
     volumes:
       - ./php/api:/var/www/html/api
-      - ./php/phpmyadmin:/var/www/html/phpmyadmin
     env_file:
       - path: build/mail.dvlp
     environment:
@@ -51,8 +55,14 @@ services:
       BASE_ADDR: ${BASE_ADDR}
       HOST_ADDR: ${HOST_ADDR}
 
+  phpmyadmin:
+    image: phpmyadmin:fpm-alpine
+    environment:
+      PMA_HOST: mysql
+      PMA_ABSOLUTE_URI: ${HOST_ADDR}phpmyadmin/
+
   mysql:
-    image: mysql
+    image: mysql:latest
     user: ${USRID}:${GRPID}
     volumes:
       - /var/lib/mysql

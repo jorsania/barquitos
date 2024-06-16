@@ -24,11 +24,23 @@ services:
     user: ${USRID}:${GRPID}
     build:
       context: frontend
-      dockerfile: Dockerfile.prod
+      target: barquitos_frontend_prod
+    deploy:
+      labels:
+        org.opencontainers.image.source: https://github.com/jorsania/barquitos
     environment:
       DOMAIN: ${DOMAIN}
       BASE_ADDR: ${BASE_ADDR}
       HOST_ADDR: ${HOST_ADDR}
+
+  tomcat:
+    restart: always
+    image: ghcr.io/jorsania/barquitos_tomcat
+    build:
+      context: tomcat
+    deploy:
+      labels:
+        org.opencontainers.image.source: https://github.com/jorsania/barquitos
 
   php:
     image: ghcr.io/jorsania/barquitos_php
@@ -36,7 +48,10 @@ services:
     user: ${USRID}:${GRPID}
     build:
       context: php
-      dockerfile: Dockerfile.prod
+      target: barquitos_php_prod
+    deploy:
+      labels:
+        org.opencontainers.image.source: https://github.com/jorsania/barquitos
     secrets:
       - db_password
       - mail_password
@@ -46,6 +61,12 @@ services:
       DOMAIN: ${DOMAIN}
       BASE_ADDR: ${BASE_ADDR}
       HOST_ADDR: ${HOST_ADDR}
+
+  phpmyadmin:
+    image: phpmyadmin:fpm-alpine
+    environment:
+      PMA_HOST: mysql
+      PMA_ABSOLUTE_URI: ${HOST_ADDR}phpmyadmin/
 
   mysql:
     image: mysql

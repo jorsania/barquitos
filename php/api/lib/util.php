@@ -32,6 +32,7 @@ define("MAX_LON_EMAIL", 320);
 define("MAX_LON_TELEFONO", 15);
 
 define("EXPIRA_SOLICITUD_REGISTRO", "30 MINUTE");
+define("EXPIRA_SOLICITUD_RECUPERACION", "10 MINUTE");
 define("EXPIRA_TOKEN_PARTIDA", "100 YEAR");
 define("KEEPALIVE_ESPERA_JUGADOR", "2 SECOND");
 
@@ -59,8 +60,8 @@ function enviaMail($tipo, $alias, $email, $token)
             $asunto = "Recuperación de cuenta en el Juego de los Barquitos";
             $mensaje =
                 "Se ha recibido una solicitud de recuperación para la cuenta '$alias' en el Juego de los Barquitos, " .
-                "haz click en el siguiente enlace para cambiar la contraseña de tu cuenta:\n\n" .
-                "   ". $_ENV['HOST_ADDR'] . "recuperacion?token=$token\n\n" .
+                "haz click en el siguiente enlace para restablecer la contraseña de tu cuenta:\n\n" .
+                "   ". $_ENV['HOST_ADDR'] . "restablece/$token\n\n" .
                 "Si no has sido tú quien ha realizado esta petición puedes ignorar este mensaje.";
             break;
         case 'email':
@@ -68,7 +69,7 @@ function enviaMail($tipo, $alias, $email, $token)
             $mensaje =
                 "Se ha recibido una solicitud para asociar esta dirección de correo electrónico a la cuenta " .
                 "'$alias' en el Juego de los Barquitos, haz click en el siguiente enlace para completar el proceso de verificación:\n\n" .
-                "   ". $_ENV['HOST_ADDR'] . "verificaEmail?token=$token\n\n" .
+                "   ". $_ENV['HOST_ADDR'] . "verificaEmail/$token\n\n" .
                 "Si no has sido tú quien ha realizado esta petición puedes ignorar este mensaje.";
             break;
     }

@@ -1,0 +1,28 @@
+<div class="wrapper">
+    <img src="assets/img/portada.jpeg" />
+    <mat-card *ngIf="!solicitudEnviada" class="mat-elevation-z4">
+        <mat-card-content>
+            <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+                <h1>Recuperación de cuenta</h1>
+                <p>Introduce tu nombre de usuario o dirección de correo electrónico asociada, 
+                    te enviaremos un enlace para restablecer la contraseña.</p>
+                <mat-form-field>
+                    <input matInput [(ngModel)]="cuenta" placeholder="Introduce usuario o email"
+                        name="password" required>
+                </mat-form-field>
+                <div class="boton">
+                    <button mat-raised-button color="primary">Restablecer contraseña</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+    <mat-card id="solicitudEnviada" *ngIf="solicitudEnviada" class="mat-elevation-z4">
+        <p>
+            Revisa tu cuenta de correo electrónico, si el nombre de usuario o dirección que has indicado está registrada 
+            en nuestra web, recibirás un correo electrónico con un enlace con el que podrás restablecer la contraseña. 
+            El enlace tiene una validez de 10 minutos, si no aparece el mensaje en la bandeja de entrada revisa también 
+            la carpeta de spam.
+        </p>
+        <button mat-raised-button color="primary" routerLink="/acceso">De acuerdo</button>
+    </mat-card>
+</div>

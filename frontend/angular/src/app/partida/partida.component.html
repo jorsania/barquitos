@@ -1,0 +1,35 @@
+<div class="wrapper">
+    <img src="assets/img/portada.jpeg" />
+    <div class="tableros">
+        <div class="tableroWrapper" color="primary">
+            <div class="tablero">
+                <div *ngIf="notificaTurnoJugador" class="dialogo turno">
+                    Te toca
+                </div>
+                <div *ngFor="let fila of tableroOponente; let y = index" class="fila">
+                    <div *ngFor="let celda of fila; let x = index" (click)="dispara(x, y)" class="celda">
+                        <mat-icon>{{ celda }}</mat-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tableroWrapper" color="primary">
+            <div class="tablero">
+                <div *ngIf="notificaTurnoOponente" class="dialogo turno">
+                    Turno de tu contrincante
+                </div>
+                <div *ngFor="let fila of tableroPropio; let i = index" class="fila">
+                    <div *ngFor="let celda of fila; let j = index" class="celda">
+                        <mat-icon>{{ celda }}</mat-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="ganador" class="dialogo final">
+            ¡Enhorabuena, has ganado!
+        </div>
+        <div *ngIf="perdedor" class="dialogo final">
+            Perdiste... otra vez será
+        </div>
+    </div>
+</div>

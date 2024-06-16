@@ -10,7 +10,6 @@ import { Respuesta } from '../respuesta';
 })
 export class ActivaCuentaComponent implements OnInit {
 
-  private sub: any;
   private token: string | null = null;
   public tokenValido: boolean | null = null;
   public cuentaActivada: boolean = false;
@@ -25,7 +24,7 @@ export class ActivaCuentaComponent implements OnInit {
     private registroService: RegistroService) { }
 
   ngOnInit(): void {
-    this.sub = this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.token = params['token'];
       if (this.token) 
         this.registroService.compruebaToken(this.token).
@@ -48,7 +47,10 @@ export class ActivaCuentaComponent implements OnInit {
           this.tokenValido = null;
           this.cuentaActivada = true;
         } else {
-          this.errorValidacion = respuesta.contenido;
+          if (respuesta.contenido.length == 0)
+            this.tokenValido = false;
+          else 
+            this.errorValidacion = respuesta.contenido;
         }
       });
   }

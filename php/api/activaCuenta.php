@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     // Finalizamos el registro
-    $erroresValidacion = $jugador->finalizaRegistro($password, $token);
+    $erroresValidacion = $jugador->cambiaPassword($password, $token);
     if ($erroresValidacion) {
         $respuesta->exito = false;
         $respuesta->mensaje = "La contraseña no es válida";

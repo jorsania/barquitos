@@ -1,7 +1,8 @@
 import { AppComponent }          from './app.component';
-import { AppRoutingModule }      from './app-routing.module';
 import { AccesoComponent }       from './acceso/acceso.component';
 import { InicioComponent }       from './inicio/inicio.component';
+import { PartidaComponent }      from './partida/partida.component';
+import { AppRoutingModule }      from './app-routing.module';
 import { RegistroComponent }     from './registro/registro.component';
 import { ActivaCuentaComponent } from './activa-cuenta/activa-cuenta.component';
 
@@ -29,14 +30,19 @@ import { MatNativeDateModule }   from '@angular/material/core';
 import { MatDialogModule }       from '@angular/material/dialog';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RecuperaComponent } from './recupera/recupera.component';
+import { RestablecePasswordComponent } from './restablece-password/restablece-password.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AccesoComponent,
     InicioComponent,
+    PartidaComponent,
     RegistroComponent,
+    RecuperaComponent,
     ActivaCuentaComponent,
+    RestablecePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,7 +64,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatCheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
