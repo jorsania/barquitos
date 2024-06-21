@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutentificaService } from '../servicios/autentifica.service';
 import { filter, Subject, take, takeUntil } from 'rxjs';
@@ -15,7 +15,7 @@ export class AccesoComponent implements OnInit, OnDestroy {
   public recuerdame = false;
   public mensaje = '';
 
-  private readonly returnUrl: string;
+  @Input('returnUrl') returnUrl: string = '/';
   private _destroySub$ = new Subject<void>();
 
   constructor(
@@ -23,7 +23,6 @@ export class AccesoComponent implements OnInit, OnDestroy {
     private _route: ActivatedRoute,
     private _autentificaService: AutentificaService
   ) {
-    this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   public ngOnInit(): void {
@@ -46,9 +45,9 @@ export class AccesoComponent implements OnInit, OnDestroy {
         respuesta.autentificado;
         if (respuesta.autentificado) 
           this._router.navigateByUrl(this.returnUrl);
-          else {
-            this.mensaje = respuesta.mensaje;
-          }
+        else {
+          this.mensaje = respuesta.mensaje;
+        }
       });
   }
 }

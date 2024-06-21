@@ -16,11 +16,11 @@
       <mat-icon>history</mat-icon>
       Partida rápida
     </button>
-    <button mat-button routerLink="/buscaPartida" *ngIf="isAuthenticated">
+    <button mat-button routerLink="/inicio" *ngIf="isAuthenticated">
       <mat-icon>playlist_add</mat-icon>
       Crea Partida
     </button>
-    <button mat-button routerLink="/inicio" *ngIf="isAuthenticated">
+    <button mat-button routerLink="/partidas" *ngIf="isAuthenticated">
       <mat-icon>view_headline</mat-icon>
       Mis Partidas
     </button>
@@ -54,11 +54,11 @@
     <mat-icon>history</mat-icon>
     Partida rápida
   </button>
-  <button mat-menu-item routerLink="/buscaPartida" *ngIf="isAuthenticated">
+  <button mat-menu-item routerLink="/inicio" *ngIf="isAuthenticated">
     <mat-icon>playlist_add</mat-icon>
     Crea Partida
   </button>
-  <button mat-menu-item routerLink="/inicio" *ngIf="isAuthenticated">
+  <button mat-menu-item routerLink="/partidas" *ngIf="isAuthenticated">
     <mat-icon>view_headline</mat-icon>
     Mis Partidas
   </button>

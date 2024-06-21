@@ -16,9 +16,9 @@ export class AppComponent {
   constructor(private _autentificaService: AutentificaService) { }
 
   public ngOnInit(): void {
-    this._autentificaService.isAuthenticated$.pipe(
-      takeUntil(this._destroySub$)
-    ).subscribe((isAuthenticated: boolean) => this.isAuthenticated = isAuthenticated);
+    this._autentificaService.isAuthenticated$
+      .pipe(takeUntil(this._destroySub$))
+      .subscribe((isAuthenticated: boolean) => this.isAuthenticated = isAuthenticated);
   }
 
   public ngOnDestroy(): void {

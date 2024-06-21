@@ -3,7 +3,6 @@ import { environment } from 'src/environments/environment';
 import { RespuestaJuego } from '../modelos/respuesta-juego';
 import { AutentificaService } from '../servicios/autentifica.service';
 import { Subject, takeUntil } from 'rxjs';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-partida',
@@ -13,11 +12,7 @@ import { Router } from '@angular/router';
 
 export class PartidaComponent implements OnInit {
 
-  private socket: WebSocket;
-  private _destroySub$ = new Subject<void>();
-
-  public turno?: boolean | null;
-
+  public turno?: boolean;
   public isAuthenticated = false;
   public ganador: boolean = false;
   public perdedor: boolean = false;
@@ -26,8 +21,10 @@ export class PartidaComponent implements OnInit {
   public notificaTurnoJugador: boolean = false;
   public notificaTurnoOponente: boolean = false;
 
+  private socket: WebSocket;
+  private _destroySub$ = new Subject<void>();
+
   constructor(
-    private _router: Router,
     private autentificaService: AutentificaService
   ) {
     this.socket = new WebSocket(`${environment.HOST_ADDR}partida/ws`);
@@ -48,7 +45,7 @@ export class PartidaComponent implements OnInit {
         const msg: RespuestaJuego = JSON.parse(event.data);
         if (msg.TableroPropio) this.tableroPropio = msg.TableroPropio;
         if (msg.TableroOponente) this.tableroOponente = msg.TableroOponente;
-        if ((msg.turno && msg.turno != this.turno) || typeof this.turno == 'undefined') {
+        if ((typeof msg.turno != 'undefined' && msg.turno != this.turno)) {
           this.turno = msg.turno;
           if (msg.turno == true) {
             this.notificaTurnoJugador = true;
@@ -58,7 +55,7 @@ export class PartidaComponent implements OnInit {
             setTimeout(() => { this.notificaTurnoOponente = false; }, 1000);
           }
         }
-        if (msg.ganador) {
+        if (typeof msg.ganador != 'undefined') {
           msg.ganador ? this.ganador = true : this.perdedor = true;
           this.socket.close();
         }
