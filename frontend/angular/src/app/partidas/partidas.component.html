@@ -1,0 +1,24 @@
+<table>
+  <thead>
+    <tr>
+      <th>ID Partida</th>
+      <th>Número de Jugadores</th>
+      <th>Jugador 1</th>
+      <th>Jugador 2</th>
+      <th>Turno</th>
+      <th>Fecha de Creación</th>
+      <th>Fecha de Modificación</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let partida of partidas">
+      <td>{{ partida.idPartida }}</td>
+      <td>{{ partida.nJugadores }}</td>
+      <td>{{ partida.jugador1 }}</td>
+      <td>{{ partida.jugador2 }}</td>
+      <td>{{ partida.turno ? 'Sí' : 'No' }}</td>
+      <td>{{ partida.fechaCrea }}</td>
+      <td>{{ partida.fechaMod }}</td>
+    </tr>
+  </tbody>
+</table>

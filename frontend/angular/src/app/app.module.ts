@@ -32,6 +32,7 @@ import { MatDialogModule }       from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RecuperaComponent } from './recupera/recupera.component';
 import { RestablecePasswordComponent } from './restablece-password/restablece-password.component';
+import { PartidasComponent } from './partidas/partidas.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { RestablecePasswordComponent } from './restablece-password/restablece-pa
     AccesoComponent,
     InicioComponent,
     PartidaComponent,
+    PartidasComponent,
     RegistroComponent,
     RecuperaComponent,
     ActivaCuentaComponent,

@@ -1,30 +1,54 @@
 import { Component, OnInit } from '@angular/core';
-import { PartidaService } from '../partida.service';
+import { environment } from 'src/environments/environment';
+import { RespuestaJuego } from '../modelos/respuesta-juego';
+import { AutentificaService } from '../servicios/autentifica.service';
+import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-partida',
   templateUrl: './partida.component.html',
-  styleUrls: ['./partida.component.css']
+  styleUrls: ['./partida.component.css'],
 })
 
 export class PartidaComponent implements OnInit {
 
-  turno: boolean | null = null;
-  ganador: boolean = false;
-  perdedor: boolean = false;
-  notificaTurnoJugador: boolean = false;
-  notificaTurnoOponente: boolean = false;
-  tableroPropio: String[][];
-  tableroOponente: String[][];
+  private socket: WebSocket;
+  private _destroySub$ = new Subject<void>();
 
-  constructor(private partidaService: PartidaService) {
+  public turno?: boolean | null;
+
+  public isAuthenticated = false;
+  public ganador: boolean = false;
+  public perdedor: boolean = false;
+  public tableroPropio: String[][];
+  public tableroOponente: String[][];
+  public notificaTurnoJugador: boolean = false;
+  public notificaTurnoOponente: boolean = false;
+
+  constructor(
+    private _router: Router,
+    private autentificaService: AutentificaService
+  ) {
+    this.socket = new WebSocket(`${environment.HOST_ADDR}partida/ws`);
     this.tableroPropio = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => ''));
     this.tableroOponente = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => ''));
-    this.partidaService.connect().subscribe({
-      next: (msg) => {
-        if (typeof msg.TableroPropio !== 'undefined') this.tableroPropio = msg.TableroPropio;
-        if (typeof msg.TableroOponente !== 'undefined') this.tableroOponente = msg.TableroOponente;
-        if (typeof msg.turno !== 'undefined' && msg.turno != this.turno) {
+    this.autentificaService.isAuthenticated$.pipe(
+      takeUntil(this._destroySub$)
+    ).subscribe((isAuthenticated: boolean) => this.isAuthenticated = isAuthenticated);
+  };
+
+  public dispara(x: number, y: number) {
+    if (this.turno) this.socket.send(JSON.stringify({ "disparo": { "x": x + 1, "y": y + 1 } }))
+  }
+
+  ngOnInit(): void {
+    this.socket
+      .onmessage =(event) => {
+        const msg: RespuestaJuego = JSON.parse(event.data);
+        if (msg.TableroPropio) this.tableroPropio = msg.TableroPropio;
+        if (msg.TableroOponente) this.tableroOponente = msg.TableroOponente;
+        if ((msg.turno && msg.turno != this.turno) || typeof this.turno == 'undefined') {
           this.turno = msg.turno;
           if (msg.turno == true) {
             this.notificaTurnoJugador = true;
@@ -34,20 +58,15 @@ export class PartidaComponent implements OnInit {
             setTimeout(() => { this.notificaTurnoOponente = false; }, 1000);
           }
         }
-        if (typeof msg.ganador !== 'undefined') {
+        if (msg.ganador) {
           msg.ganador ? this.ganador = true : this.perdedor = true;
-          this.partidaService.close();
+          this.socket.close();
         }
-
       }
-    });
   }
 
-  ngOnInit(): void {
-    if (this.partidaService.isOpen()) this.partidaService.sendMessage(JSON.stringify({ "situacion": null }));
-  }
-
-  public dispara(x: number, y: number) {
-    if (this.turno) this.partidaService.sendMessage(JSON.stringify({ "disparo": { "x": x + 1, "y": y + 1 } }))
+  ngOnDestroy() {
+    this.socket.close();
+    this._destroySub$.next();
   }
 }

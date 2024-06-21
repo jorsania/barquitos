@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { RegistroService } from '../registro.service';
-import { Jugador } from '../jugador';
+import { Jugador } from '../modelos/jugador';
+import { RespuestaAPI } from '../modelos/respuesta-api';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registro',
@@ -14,7 +16,7 @@ export class RegistroComponent implements OnInit {
   public errores: Jugador = new Jugador();
   public registroCompletado: boolean = false;
 
-  constructor(private registroService: RegistroService) {
+  constructor(private http: HttpClient) {
     this.errores.apellidos = '';
     this.errores.telefono = '';
   }
@@ -23,16 +25,14 @@ export class RegistroComponent implements OnInit {
   }
 
   onSubmit() {
-    this.registroService.postRegistro(this.jugador)
-      .subscribe(
-        respuesta => {
-          if (respuesta.exito) {
-            this.registroCompletado = true;
-          } else {
-            this.errores = respuesta.contenido;
-          }
-        }
-      );
+    this.http
+      .post<RespuestaAPI>(`${environment.HOST_ADDR}api/registraJugador.php`,this.jugador)
+      .subscribe(respuesta => {
+        if (respuesta.exito) {
+          this.registroCompletado = true;
+        } else {
+          this.errores = respuesta.contenido;
+        } 
+      }); 
   }
-
 }

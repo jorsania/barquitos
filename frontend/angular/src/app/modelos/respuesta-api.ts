@@ -1,4 +1,4 @@
-export class Respuesta {
+export class RespuestaAPI {
     constructor(
         public exito: boolean,
         public mensaje: string,

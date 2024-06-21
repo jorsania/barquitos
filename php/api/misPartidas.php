@@ -20,20 +20,15 @@ $sql =
         (partida.turno = $idJugador) turno,
         fechaCrea,
         fechaMod
-    FROM
-        jugador as jugador1 
-    JOIN 
+     FROM
         partida 
-        ON 
-            jugador1.idJugador = partida.idJugador1
-    LEFT JOIN
-        jugador as jugador2 
-        ON 
-            partida.idJugador2 = jugador2.idJugador
-    WHERE 
-        (partida.idJugador1 = $idJugador AND partida.nJugadores = 1)
-        OR (partida.idJugador1 = $idJugador AND partida.idJugador2 IS NOT NULL)
-        OR partida.idJugador2 = $idJugador";
+        INNER JOIN jugador as jugador1 ON partida.idJugador1 = jugador1.idJugador
+        LEFT  JOIN jugador as jugador2 ON partida.idJugador2 = jugador2.idJugador
+     WHERE 
+        partida.idJugador2 = $idJugador OR
+        (partida.idJugador1 = $idJugador AND partida.nJugadores = 1) OR
+        (partida.idJugador1 = $idJugador AND partida.idJugador2 IS NOT NULL)
+    ";
 
 
 $bd = BaseDeDatos::conecta();

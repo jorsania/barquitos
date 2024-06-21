@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subject, take, takeUntil } from 'rxjs';
-import { AutentificaService } from './autentifica.service';
+import { AutentificaService } from './servicios/autentifica.service';
 
 @Component({
   selector: 'app-root',

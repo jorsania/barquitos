@@ -217,14 +217,6 @@ class Jugador
         return $erroresValidacion;
     }
 
-    // Envía un enlace de recuperación de contraseña a una cuenta si existe
-    public static function recuperaCuenta($cuenta)
-    {
-        $jugador = self::busca($cuenta);
-        if (!empty($jugador)) {
-        }
-    }
-
     // Validaciones para cada campo
     private function valida_alias()
     {

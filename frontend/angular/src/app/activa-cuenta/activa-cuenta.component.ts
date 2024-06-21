@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { RegistroService } from '../registro.service';
 import { ActivatedRoute } from '@angular/router';
-import { Respuesta } from '../respuesta';
+import { RespuestaAPI } from '../modelos/respuesta-api';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-activa-cuenta',
@@ -21,14 +22,15 @@ export class ActivaCuentaComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private registroService: RegistroService) { }
+    private http: HttpClient) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.token = params['token'];
       if (this.token) 
-        this.registroService.compruebaToken(this.token).
-          subscribe((respuesta: Respuesta) => {
+        this.http
+          .get<RespuestaAPI>(`${environment.HOST_ADDR}api/activaCuenta.php?token=${this.token}`)
+          .subscribe((respuesta) => {
             if (respuesta.exito) {
               this.alias = respuesta.contenido.alias;
               this.email = respuesta.contenido.email;
@@ -39,8 +41,9 @@ export class ActivaCuentaComponent implements OnInit {
   }
 
   onSubmit() {
-    this.registroService.activaCuenta(this.token as string, this.pass1).
-      subscribe((respuesta: Respuesta) => {
+    this.http
+      .post<RespuestaAPI>(`${environment.HOST_ADDR}api/activaCuenta.php?token=${this.token}`, this.pass1)
+      .subscribe((respuesta) => {
         if (respuesta.exito) {
           this.alias = respuesta.contenido.alias;
           this.email = respuesta.contenido.email;

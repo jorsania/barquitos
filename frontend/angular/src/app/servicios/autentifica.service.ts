@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, catchError, from, map, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { Respuesta } from './respuesta';
-import { environment } from '../environments/environment';
+import { RespuestaAPI } from '../modelos/respuesta-api';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -25,14 +25,14 @@ export class AutentificaService implements OnDestroy {
     this._notificador$.complete();
   }
 
-  public login(login: string, pass: string, permanente: number): Observable<Respuesta> {
-    return from(this.http.post<Respuesta>(`${environment.HOST_ADDR}api/autentifica.php`,
+  public login(login: string, pass: string, permanente: number): Observable<RespuestaAPI> {
+    return from(this.http.post<RespuestaAPI>(`${environment.HOST_ADDR}api/autentifica.php`,
       {
         login: login,
         pass: pass,
         permanente: permanente
       }))
-      .pipe(map((respuesta : Respuesta) => this.manejaRespuesta(respuesta)));
+      .pipe(map((respuesta : RespuestaAPI) => this.manejaRespuesta(respuesta)));
   }
 
   public logout(redirect: string): Observable<void> {
@@ -43,7 +43,7 @@ export class AutentificaService implements OnDestroy {
       }));
   }
 
-  private manejaRespuesta(respuesta: Respuesta): Respuesta {
+  private manejaRespuesta(respuesta: RespuestaAPI): RespuestaAPI {
     if (!respuesta.exito) {
       throw new Error("Error en el proceso de autenticación:\n" + respuesta.mensaje);
     }

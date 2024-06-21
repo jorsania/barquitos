@@ -1,4 +1,5 @@
-<div class="wrapper">
+<app-acceso *ngIf="!isAuthenticated"></app-acceso>
+<div *ngIf="isAuthenticated" class="wrapper">
     <img src="assets/img/portada.jpeg" />
     <div class="tableros">
         <div class="tableroWrapper" color="primary">

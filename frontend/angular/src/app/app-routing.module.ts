@@ -5,6 +5,7 @@ import { InicioComponent } from './inicio/inicio.component';
 import { PartidaComponent } from './partida/partida.component';
 import { RegistroComponent } from './registro/registro.component';
 import { RecuperaComponent } from './recupera/recupera.component';
+import { PartidasComponent } from './partidas/partidas.component';
 import { ActivaCuentaComponent } from './activa-cuenta/activa-cuenta.component';
 import { RestablecePasswordComponent } from './restablece-password/restablece-password.component';
 
@@ -12,7 +13,7 @@ const routes: Routes = [
   {path: '', component: InicioComponent},
   {path: 'acceso', component: AccesoComponent},
   {path: 'partida', component: PartidaComponent},
-  {path: 'partidas', component: InicioComponent},
+  {path: 'partidas', component: PartidasComponent},
   {path: 'registro', component: RegistroComponent},
   {path: 'recupera', component: RecuperaComponent},
   {path: 'activa/:token', component: ActivaCuentaComponent},

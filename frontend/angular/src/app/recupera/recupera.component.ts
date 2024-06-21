@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { RegistroService } from '../registro.service';
-import { Respuesta } from '../respuesta';
+import { RespuestaAPI } from '../modelos/respuesta-api';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-recupera',
@@ -12,13 +13,15 @@ export class RecuperaComponent implements OnInit {
   public solicitudEnviada: boolean = false;
   public cuenta: string = '';
 
-  constructor(private registroService: RegistroService) { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
   }
 
   onSubmit() {
-    this.registroService.recuperaCuenta(this.cuenta).subscribe((respuesta: Respuesta) => {
+    this.http
+      .post<RespuestaAPI>(`${environment.HOST_ADDR}api/recuperaCuenta.php`, this.cuenta)
+      .subscribe((respuesta: RespuestaAPI) => {
       if (respuesta.exito) this.solicitudEnviada = true;
     });
   }
