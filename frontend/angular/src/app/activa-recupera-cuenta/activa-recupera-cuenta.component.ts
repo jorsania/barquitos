@@ -24,45 +24,47 @@ export class ActivaRecuperaCuentaComponent implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute
   ) {
-    this.token = this.route.snapshot.params['token'];
     this.accion = this.route.snapshot.url[0].path; 
+    this.token = this.route.snapshot.params['token'];
   }
 
   ngOnInit(): void {
     this.http
       .get<RespuestaAPI>(`${environment.HOST_ADDR}api/cambiaPassword.php?motivo=${this.accion}&token=${this.token}`)
       .subscribe(respuesta => {
-        if (respuesta.exito) {
-          this.passwordParams = {
-            accion: this.accion,
-            token: this.token
-          }
-          if (this.accion == 'activa') {
-            this.passwordParams = {
-              titulo: 'Completa el registro',
-              dialogo: 
-                `Establece una contraseña para completar el registro de la cuenta '${respuesta.contenido.alias}' 
-                 asociada al email '${respuesta.contenido.email}'`,
-              boton: 'Activa la cuenta'
-            };
-            this.despedida = 
-              `La cuenta ha sido activada correctamente, a continuación serás redirigido a la página de
-               acceso donde podrás acceder al juego con tus nuevas credenciales`;
-          } else if (this.accion == 'recupera') {
-            this.passwordParams = {
-              titulo: 'Restablece la contraseña',
-              dialogo:
-                `Elige una nueva contraseña para la cuenta '${respuesta.contenido.alias}'
-                 asociada al email '${respuesta.contenido.email}'`,
-              boton: 'Restablece contraseña'
-            };
-            this.despedida = 
-              `La contraseña ha sido restablecida correctamente, a continuación serás redirigido a la página de
-               acceso donde podrás acceder al juego con tus nuevas credenciales`;
-          }
-          this.tokenValido = true;
-        }
-      })
+        this.solicitaAutorizacion(respuesta);
+      });
+  }
+
+  private solicitaAutorizacion(respuesta: RespuestaAPI): void {
+    if (respuesta.exito) {
+      if (this.accion == 'activa') {
+        this.passwordParams = {
+          titulo: 'Completa el registro',
+          dialogo: 
+            `Establece una contraseña para completar el registro de la cuenta '${respuesta.contenido.alias}' 
+             asociada al email '${respuesta.contenido.email}'`,
+          boton: 'Activa la cuenta'
+        };
+        this.despedida = 
+          `La cuenta ha sido activada correctamente, a continuación serás redirigido a la página de
+           acceso donde podrás acceder al juego con tus nuevas credenciales`;
+      } else if (this.accion == 'recupera') {
+        this.passwordParams = {
+          titulo: 'Restablece la contraseña',
+          dialogo:
+            `Elige una nueva contraseña para la cuenta '${respuesta.contenido.alias}'
+             asociada al email '${respuesta.contenido.email}'`,
+          boton: 'Restablece contraseña'
+        };
+        this.despedida = 
+          `La contraseña ha sido restablecida correctamente, a continuación serás redirigido a la página de
+           acceso donde podrás acceder al juego con tus nuevas credenciales`;
+      }
+      this.passwordParams.token = this.token;
+      this.passwordParams.accion = this.accion;
+      this.tokenValido = true;
+    }
   }
 
   resultado(passEstablecido: boolean) {
