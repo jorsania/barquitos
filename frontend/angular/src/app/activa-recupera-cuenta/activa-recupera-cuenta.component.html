@@ -4,7 +4,7 @@
     <mat-card *ngIf="!tokenValido" class="mat-elevation-z4">
         El enlace ha expirado o es inválido
     </mat-card>
-    <mat-card id="cuentaActivada" *ngIf="finalizado" class="mat-elevation-z4">
+    <mat-card id="finalizado" *ngIf="finalizado" class="mat-elevation-z4">
         <p>{{despedida}}</p>
         <button mat-raised-button color="primary" routerLink="/acceso">De acuerdo</button>
     </mat-card>
