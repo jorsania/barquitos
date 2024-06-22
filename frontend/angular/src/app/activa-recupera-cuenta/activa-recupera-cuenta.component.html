@@ -1,0 +1,11 @@
+<div class="wrapper">
+    <img src="assets/img/portada.jpeg" />
+    <app-password id="password" *ngIf="tokenValido" [params]="passwordParams" (resultado)="resultado($event)"></app-password>
+    <mat-card *ngIf="!tokenValido" class="mat-elevation-z4">
+        El enlace ha expirado o es inválido
+    </mat-card>
+    <mat-card id="cuentaActivada" *ngIf="cuentaActivada" class="mat-elevation-z4">
+        <p>{{despedida}}</p>
+        <button mat-raised-button color="primary" routerLink="/acceso">De acuerdo</button>
+    </mat-card>
+</div>

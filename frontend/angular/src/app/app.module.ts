@@ -4,7 +4,7 @@ import { InicioComponent }       from './inicio/inicio.component';
 import { PartidaComponent }      from './partida/partida.component';
 import { AppRoutingModule }      from './app-routing.module';
 import { RegistroComponent }     from './registro/registro.component';
-import { ActivaCuentaComponent } from './activa-cuenta/activa-cuenta.component';
+import { ActivaRecuperaCuentaComponent } from './activa-recupera-cuenta/activa-recupera-cuenta.component';
 
 import { NgModule }              from '@angular/core';
 import { BrowserModule }         from '@angular/platform-browser';
@@ -31,8 +31,8 @@ import { MatDialogModule }       from '@angular/material/dialog';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RecuperaComponent } from './recupera/recupera.component';
-import { RestablecePasswordComponent } from './restablece-password/restablece-password.component';
 import { PartidasComponent } from './partidas/partidas.component';
+import { PasswordComponent } from './password/password.component';
 
 @NgModule({
   declarations: [
@@ -43,8 +43,8 @@ import { PartidasComponent } from './partidas/partidas.component';
     PartidasComponent,
     RegistroComponent,
     RecuperaComponent,
-    ActivaCuentaComponent,
-    RestablecePasswordComponent,
+    PasswordComponent,
+    ActivaRecuperaCuentaComponent,
   ],
   imports: [
     BrowserModule,

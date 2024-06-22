@@ -61,7 +61,7 @@ function enviaMail($tipo, $alias, $email, $token)
             $mensaje =
                 "Se ha recibido una solicitud de recuperación para la cuenta '$alias' en el Juego de los Barquitos, " .
                 "haz click en el siguiente enlace para restablecer la contraseña de tu cuenta:\n\n" .
-                "   ". $_ENV['HOST_ADDR'] . "restablece/$token\n\n" .
+                "   ". $_ENV['HOST_ADDR'] . "recupera/$token\n\n" .
                 "Si no has sido tú quien ha realizado esta petición puedes ignorar este mensaje.";
             break;
         case 'email':

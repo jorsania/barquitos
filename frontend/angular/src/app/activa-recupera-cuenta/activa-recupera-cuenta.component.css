@@ -13,26 +13,22 @@ img {
     user-select: none;
 }
 
-mat-card {
+#password, mat-card {
+    display:block;
     position: relative;
-    max-width: 400px;
-    top: 40%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 25px;
     text-align: center;
 }
 
-mat-form-field {
-    display: block;
+#password {
+    max-width: 450px;
 }
 
-.boton {
-    margin: 10px 0 20px 0;
-}
-
-.boton>button {
-    width: 100%;
+mat-card {
+    max-width: 400px;
+    padding: 25px;
 }
 
 #cuentaActivada {

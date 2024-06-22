@@ -212,7 +212,7 @@ class Jugador
         if (!$erroresValidacion) {
             $this->pass = $pass;
             $this->actualiza();
-            Token::obten($token)->borra();
+            if (!empty($token)) Token::obten($token)->borra();
         }
         return $erroresValidacion;
     }

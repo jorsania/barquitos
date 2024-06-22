@@ -6,8 +6,7 @@ import { PartidaComponent } from './partida/partida.component';
 import { RegistroComponent } from './registro/registro.component';
 import { RecuperaComponent } from './recupera/recupera.component';
 import { PartidasComponent } from './partidas/partidas.component';
-import { ActivaCuentaComponent } from './activa-cuenta/activa-cuenta.component';
-import { RestablecePasswordComponent } from './restablece-password/restablece-password.component';
+import { ActivaRecuperaCuentaComponent } from './activa-recupera-cuenta/activa-recupera-cuenta.component';
 
 const routes: Routes = [
   {path: '', component: InicioComponent},
@@ -16,8 +15,8 @@ const routes: Routes = [
   {path: 'partidas', component: PartidasComponent},
   {path: 'registro', component: RegistroComponent},
   {path: 'recupera', component: RecuperaComponent},
-  {path: 'activa/:token', component: ActivaCuentaComponent},
-  {path: 'restablece/:token', component: RestablecePasswordComponent},
+  {path: 'activa/:token', component: ActivaRecuperaCuentaComponent},
+  {path: 'recupera/:token', component: ActivaRecuperaCuentaComponent},
   {path: '**', component: InicioComponent}
 ];
 
