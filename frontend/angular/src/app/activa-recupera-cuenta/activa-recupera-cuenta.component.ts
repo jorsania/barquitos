@@ -63,6 +63,8 @@ export class ActivaRecuperaCuentaComponent implements OnInit {
       this.passwordParams.token = this.token;
       this.passwordParams.accion = this.accion;
       this.tokenValido = true;
+    } else {
+      this.tokenInvalido = true;
     }
   }
 
