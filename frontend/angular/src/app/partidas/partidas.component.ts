@@ -24,17 +24,15 @@ export class PartidasComponent implements OnInit {
       .pipe(takeUntil(this._destroySub$))
       .subscribe((isAuthenticated: boolean) => {
         this.isAuthenticated = isAuthenticated
-        this.http.get<any[]>(`${environment.HOST_ADDR}api/misPartidas.php`).subscribe((data) => {
-          this.partidas = data;
-        });
+        this.http.get<any[]>(`${environment.HOST_ADDR}api/misPartidas.php`)
+          .subscribe((data) => this.partidas = data);
       });
   }
 
   ngOnInit(): void {
     if (this.isAuthenticated)
-      this.http.get<any[]>(`${environment.HOST_ADDR}api/misPartidas.php`).subscribe((data) => {
-        this.partidas = data;
-      });
+      this.http.get<any[]>(`${environment.HOST_ADDR}api/misPartidas.php`)
+        .subscribe((data) => this.partidas = data);
   }
 
   ngOnDestroy() {

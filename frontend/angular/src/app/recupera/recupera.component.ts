@@ -22,7 +22,7 @@ export class RecuperaComponent implements OnInit {
     this.http
       .post<RespuestaAPI>(`${environment.HOST_ADDR}api/recuperaCuenta.php`, this.cuenta)
       .subscribe((respuesta: RespuestaAPI) => {
-      if (respuesta.exito) this.solicitudEnviada = true;
-    });
+        if (respuesta.exito) this.solicitudEnviada = true
+      });
   }
 }
