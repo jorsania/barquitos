@@ -12,7 +12,7 @@ import { PasswordParams } from '../password/password.component';
 })
 export class ActivaRecuperaCuentaComponent implements OnInit {
 
-  public tokenValido: boolean = false;
+  public tokenValido: boolean | null = null;
   public finalizado: boolean = false;
   public passwordParams: PasswordParams = {};
   public despedida: string = '';
@@ -67,7 +67,7 @@ export class ActivaRecuperaCuentaComponent implements OnInit {
 
   resultado(passEstablecido: boolean) {
     if (passEstablecido) {
-      this.tokenValido = false;
+      this.tokenValido = null;
       this.finalizado = true;
     } else {
       this.tokenValido = false;
