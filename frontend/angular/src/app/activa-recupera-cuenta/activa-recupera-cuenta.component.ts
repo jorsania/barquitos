@@ -31,9 +31,7 @@ export class ActivaRecuperaCuentaComponent implements OnInit {
   ngOnInit(): void {
     this.http
       .get<RespuestaAPI>(`${environment.HOST_ADDR}api/cambiaPassword.php?motivo=${this.accion}&token=${this.token}`)
-      .subscribe(respuesta => {
-        this.solicitaAutorizacion(respuesta);
-      });
+      .subscribe(respuesta => this.solicitaAutorizacion(respuesta));
   }
 
   private solicitaAutorizacion(respuesta: RespuestaAPI): void {
