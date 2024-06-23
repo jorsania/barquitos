@@ -11,17 +11,27 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.RemoteEndpoint.Basic;
 import javax.websocket.Session;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import modelo.Jugador.Jugador.EfectoDisparo;
 import modelo.Partida.Partida;
 import util.Posicion;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
-@ServerEndpoint("/ws")
+@ServerEndpoint("/ws/{idPartida}")
 public class WebSocket {
 
     private Partida partida = new Partida();
+
+    private void informaPartidaNoEncontrada(Basic remote) throws IOException {
+        remote.sendText(Json.createObjectBuilder().add("error", "Partida no encontrada").build().toString());
+    }
     
     private void informaTurno(Basic remote) throws IOException {
         remote.sendText(Json.createObjectBuilder().add("turno", partida.isTurnoJugador()).build().toString());
@@ -95,9 +105,31 @@ public class WebSocket {
     }
 
     @OnOpen
-    public void onOpen(Session session) throws IOException, InterruptedException {
+    public void onOpen(@PathParam("idPartida") String idPartida, Session session) throws IOException, InterruptedException {
 
         Basic remote = session.getBasicRemote();
+
+        try {
+            // Establish database connection
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/barquitos", "root", "root");
+            
+            // Perform database operations
+            String query = "SELECT * FROM partida WHERE idPartida = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, idPartida);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                informaPartidaNoEncontrada(remote);
+                session.close();
+                return;
+            }
+                
+            connection.close();
+        } catch (SQLException e) {
+            // Handle any errors that occur during database connection or operations
+            e.printStackTrace();
+        }
 
         informaTurno(remote);
         informaTableros(remote);
